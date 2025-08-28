@@ -48,5 +48,12 @@ EDA(loader)
     - **lag (int):** how many lags to look back, default is 20
     - **ncols (int):** how many columns to do for graphing, default is 3
     - **conf (bool):** whether or not to include conf interval (anything below is noise)
+- **getPACF:** returns the Partial Autocorrelation Function of all lags for all stocks (stocks x lags matrix) AND plots all of them
+    - **save (bool):** saves graphs as png to Notebooks folder, default is false
+    - **graph (bool):**  plots PACF for all stocks, default is true
+    - **lag (int):** how many lags to look back, default is 20
+    - **ncols (int):** how many columns to do for graphing, default is 3
+    - **conf (bool):** whether or not to include conf interval (anything below is noise)
+
 
 
