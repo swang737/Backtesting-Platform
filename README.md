@@ -1,6 +1,6 @@
 # Backtesting-Platform Documentation
 ## DataLoader
-DataLoader takes in a 2D array of prices per day that is (time x prices)
+Stock data manipulator. DataLoader takes in a 2D array of prices per day that is (time x prices).
 
 ### Initiation Arguments
 Dataloader(data, stocks)
@@ -30,4 +30,22 @@ Dataloader(data, stocks)
 - **lookBackReturns:** returns t number of returns in the past (all together)
     - **t (int):** number of timesteps to look back (outputted num of arrays)
     - **log (bool):** if false, then calculates the simple returns, but default is log returns.
+
+# EDA
+Exporatory Data Analysis tool. EDA takes in a DataLoader object ONLY.
+
+## Initation Arguments
+EDA(loader)
+- **loader(obj):** DataLoader object
+
+## Attributes
+- **loader(obj)**: the DataLoader object associated with the class
+
+## Methods
+- **getACF:** returns ACFs of all lags for all stocks (stocks x lags matrix) AND plots all of them
+    - **graph (bool):**  plots ACF for all stocks, default is true
+    - **lag (int):** how many lags to look back, default is 20
+    - **ncols (int):** how many columns to do for graphing, default is 3
+    - **conf (bool):** whether or not to include conf interval (anything below is noise)
+
 
