@@ -42,7 +42,7 @@ EDA(loader)
 - **loader(obj)**: the DataLoader object associated with the class
 
 ## Methods
-- **getACF:** returns ACFs of all lags for all stocks (stocks x lags matrix) AND plots all of them
+- **getACF:** returns the Auto Correlation Function of all lags for all stocks (stocks x lags matrix) AND plots all of them
     - **graph (bool):**  plots ACF for all stocks, default is true
     - **lag (int):** how many lags to look back, default is 20
     - **ncols (int):** how many columns to do for graphing, default is 3
