@@ -8,10 +8,8 @@ Dataloader(data, stocks)
 - **stocks (arr)** is optional argument of list of stocks of interest
 
 ### Attributes
-#### data (mat) 
-##### attribute ahh
-current price data stored in class
-- nt (int): total timesteps of data
-- nins (int): total instruments of data
-- stocks (arr): current stocks class is using
-- t (int): current timestep
+- **data(mat):** current price data stored in class
+- **nt (int):** total timesteps of data
+- **nins (int):** total instruments of data
+- **stocks (arr):** current stocks class is using
+- **t (int):** current timestep
