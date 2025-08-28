@@ -9,6 +9,7 @@ Dataloader(data, stocks)
 
 ### Attributes
 #### data (mat) 
+##### attribute ahh
 current price data stored in class
 - nt (int): total timesteps of data
 - nins (int): total instruments of data
