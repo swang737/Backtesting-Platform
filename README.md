@@ -17,6 +17,7 @@ Dataloader(data, stocks)
 ### Navigation Methods
 - **resetTime:** resets current timestep to 0
 - **goToTime:** goes to specified timestep
+- **goToEnd:** goes to last timestep
 - **currentTime:** gets current timestep
 - **stepTime:** returns current prices and steps forward 1 timestep
     - **step (int):** can be specified as argument (number of timesteps forward)
