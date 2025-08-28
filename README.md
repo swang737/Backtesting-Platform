@@ -13,3 +13,10 @@ Dataloader(data, stocks)
 - **nins (int):** total instruments of data
 - **stocks (arr):** current stocks class is using
 - **t (int):** current timestep
+
+### Navigation Methods
+- **resetTime:** resets current timestep to 0
+- **goToTime:** goes to specified timestep
+- **currentTime:** gets current timestep
+- **stepTime:** returns current prices and steps forward 1 timestep
+    - **step (int):** can be specified as argument (number of timesteps forward)
