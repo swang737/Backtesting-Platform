@@ -59,6 +59,22 @@ EDA(loader)
     - **conf (bool):** whether or not to include conf interval (anything below is noise)
 - **getADF:** returns Augmented Dickey-Fuller statistics -> Check for weak stationality
     - **log (bool)**: False to use simple returns. Default is log returns.
-
+- **plotReturns:** plots returns timeseries of all stocks
+    - **log (bool):** False to use simple returns, default is log returns.
+    - **ncols (int):** Number of columns in plot matrix, default is 1
+- **fitARIMA:** fits ARIMA model to all stocks.
+    - **params (arr):** parameters in the form of [p, d, q]
+    - **train_len:** can either be ratio or integer of training set length
+    - **warning (bool):** True to show warnings. Default is False.
+    - **save (bool):** False to not save image. Default is True.
+    - **ncols (int):** Number of columns in plot matrix, default is 1
+    - **log (bool):** False to use simple returns, default is log returns.
+- **backtestARIMA:** backtests ARIMA model, outputs MAE, RMSE and plots rolling forecasts
+    - **params (arr):** parameters in the form of [p, d, q]
+    - **train_len:** can either be ratio or integer of training set length
+    - **warning (bool):** True to show warnings. Default is False
+    - **save (bool):** False to not save image. Default is True
+    - **ncols (int):** number of columns in plot matrix, default is 1.
+    - **log (bool):** false to use simple returns, default is log returns.
 
 
