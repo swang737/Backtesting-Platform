@@ -57,6 +57,8 @@ EDA(loader)
     - **lag (int):** how many lags to look back, default is 20
     - **ncols (int):** how many columns to do for graphing, default is 3
     - **conf (bool):** whether or not to include conf interval (anything below is noise)
+- **getADF:** returns Augmented Dickey-Fuller statistics -> Check for weak stationality
+    - **log (bool)**: False to use simple returns. Default is log returns.
 
 
 
