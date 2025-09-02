@@ -28,6 +28,8 @@ Dataloader(data, stocks)
 - **currentPrices:** returns prices at current timestep
 - **getReturns:** returns todays returns (yesterday to today):
     - **log (bool):** if false, then calculates the simple returns, but default is log returns.
+- **returnsToNow:** all returns until today
+    - **log (bool): ** if false, then calculates the simple returns. Default is log returns
 - **lookBackReturns:** returns t number of returns in the past (all together)
     - **t (int):** number of timesteps to look back (outputted num of arrays)
     - **log (bool):** if false, then calculates the simple returns, but default is log returns.
