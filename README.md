@@ -21,6 +21,7 @@ Dataloader(data, stocks)
 - **goToEnd:** goes to last timestep
 - **currentTime:** gets current timestep
 - **stepTime:** returns current prices and steps forward 1 timestep
+    - **history (bool):** False to use only today's returns. Default is full price history from today
     - **step (int):** can be specified as argument (number of timesteps forward)
 
 ### Main Methods
