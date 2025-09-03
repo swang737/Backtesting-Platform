@@ -1,6 +1,7 @@
 # Backtesting-Platform Documentation
-Coming: Vector ARIMA modelling
-Locally updated (not on repo): Changed stepTime to have option to return full price history
+**WIP:** Vector ARIMA modelling
+
+**Locally updated (not on repo):** Changed stepTime to have option to return full price history
 ## DataLoader
 Stock data manipulator. DataLoader takes in a 2D array of prices per day that is (time x prices).
 
