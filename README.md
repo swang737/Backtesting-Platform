@@ -1,5 +1,7 @@
 # Backtesting-Platform Documentation
-**WIP:** Vector ARIMA modelling
+**WIP:** 
+- Vector ARIMA modelling
+- Strategy module
 
 **Locally updated (not on repo):** Changed stepTime to have option to return full price history
 ## DataLoader
