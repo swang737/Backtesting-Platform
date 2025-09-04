@@ -5,6 +5,8 @@
 
 **Locally updated (not on repo):** 
 - Changed stepTime to have option to return full price history
+- plotPrices
+- Added seasonality to ARIMA on EDA
 ## DataLoader
 Stock data manipulator. DataLoader takes in a 2D array of prices per day that is (time x prices).
 
