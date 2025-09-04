@@ -2,11 +2,14 @@
 **WIP:** 
 - Vector ARIMA modelling
 - Strategy module
+- Add to topCorr so that topCorr pairs are also produced (in general)
 
 **Locally updated (not on repo):** 
-- Changed stepTime to have option to return full price history
-- plotPrices
-- Added seasonality to ARIMA on EDA
+- Changed stepTime to have option to return full price history (docs updated)
+- plotPrices (docs updated)
+- Added seasonality to ARIMA on EDA (docs updated)
+- topCorr method to EDA (docs updated)
+
 ## DataLoader
 Stock data manipulator. DataLoader takes in a 2D array of prices per day that is (time x prices).
 
@@ -54,6 +57,14 @@ EDA(loader)
 - **loader(obj)**: the DataLoader object associated with the class
 
 ## Methods
+- **plotReturns:** plots returns timeseries of all stocks
+    - **log (bool):** False to use simple returns, default is log returns.
+    - **ncols (int):** Number of columns in plot matrix, default is 1
+- **plotPrices:** plots prices timeseries of all stocks on the same graph
+- **topCorrelated:** outputs correlations of all stocks with specified stock in descending order (RETURNS ONLY for now)
+    - **stocknum (int):** specify stock number to look at correlation for
+    - **dropSelf (bool):** drops the first correlation (usually itself). Default is False, just if presenting :)
+    - **log (bool):** uses log returns, default is True, but False uses simple returns.
 - **getACF:** returns the Autocorrelation Function of all lags for all stocks (stocks x lags matrix) AND plots all of them
     - **save (bool):** saves graphs as png to Notebooks folder, default is false
     - **graph (bool):**  plots ACF for all stocks, default is true
@@ -68,11 +79,9 @@ EDA(loader)
     - **conf (bool):** whether or not to include conf interval (anything below is noise)
 - **getADF:** returns Augmented Dickey-Fuller statistics -> Check for weak stationality
     - **log (bool)**: False to use simple returns. Default is log returns.
-- **plotReturns:** plots returns timeseries of all stocks
-    - **log (bool):** False to use simple returns, default is log returns.
-    - **ncols (int):** Number of columns in plot matrix, default is 1
 - **fitARIMA:** fits ARIMA model to all stocks.
     - **params (arr):** parameters in the form of [p, d, q]
+    - **seasonal_params (arr):** parameters in the form of [p, d, q, n], leave blank if not seasonal.
     - **train_len:** can either be ratio or integer of training set length
     - **warning (bool):** True to show warnings. Default is False.
     - **save (bool):** False to not save image. Default is True.
@@ -80,6 +89,7 @@ EDA(loader)
     - **log (bool):** False to use simple returns, default is log returns.
 - **backtestARIMA:** backtests ARIMA model, outputs MAE, RMSE and plots rolling forecasts
     - **params (arr):** parameters in the form of [p, d, q]
+    - **seasonal_params (arr):** parameters in the form of [p, d, q, n], leave blank if not seasonal.
     - **train_len:** can either be ratio or integer of training set length
     - **warning (bool):** True to show warnings. Default is False
     - **save (bool):** False to not save image. Default is True
