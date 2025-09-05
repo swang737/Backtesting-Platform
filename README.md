@@ -9,6 +9,7 @@
 - plotPrices (docs updated)
 - Added seasonality to ARIMA on EDA (docs updated)
 - topCorr method to EDA (docs updated)
+- getLaggedFeatures method to DataLoader
 
 ## DataLoader
 Stock data manipulator. DataLoader takes in a 2D array of prices per day that is (time x prices).
