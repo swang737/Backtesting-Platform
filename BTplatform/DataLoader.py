@@ -51,13 +51,16 @@ class DataLoader:
         '''
         return self.t
 
-    def stepTime(self, step = 1):
+    def stepTime(self, history = True, step = 1):
         '''
         return current prices, then advances one step
         '''
         if self.t >= self.nt: # check to see if end of data
             raise IndexError('No more data')
-        prices = self.data[self.t]
+        if history:
+            prices = self.data[:self.t + 1]
+        else:
+            prices = self.data[self.t]
         self.t += step
         return prices
 
@@ -131,3 +134,30 @@ class DataLoader:
         moves timestep to the end
         '''
         self.t = self.nt
+
+    def getLagFeatures(self, stocknum, lag = 1, returns = True):
+        '''
+        input stock number, returns table with the lags up to lag of the other stocks as features
+        the columns are shifted over, so like the index in the dataframe is like stock num + 1
+        '''
+        try:
+            i = self.stocks.index(stocknum) # changes stock num to index to make it easier
+        except:
+            raise ValueError('stock number should be part of initialisation dataset!')
+
+        if returns:
+            data = self.returnsToNow().T
+        else:
+            data = self.data[:self.t + 1].T # transposing to get prices across
+            
+        y = data[i] # response
+
+        returnArr = y
+        for stock in range(self.nins):
+            for l in range(1, lag + 1):
+                shifted = np.empty_like(data[stock]) # making array same shape as y but empty
+                shifted[:] = np.nan # filling with nan
+                shifted[l:] = data[stock][:-l]
+
+                returnArr = np.vstack([returnArr, shifted])
+        return returnArr.T

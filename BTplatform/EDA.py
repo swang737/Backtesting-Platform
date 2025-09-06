@@ -167,7 +167,7 @@ class EDA:
             fig.tight_layout() # adjust so titles dont collide and squeeze shit in
             fig.subplots_adjust(top = 1) # leave room for title
 
-    def fitARIMA(self, params, train_len = 0.8, ncols = 1, log = True):
+    def fitARIMA(self, params, seasonal_params = None, train_len = 0.8, ncols = 1, log = True):
         '''
         params is (p, d, q)
         Fits arma model and plots the predicted vs test
@@ -178,15 +178,19 @@ class EDA:
             n_train = int(train_len) if train_len > 1 else int(self.loader.t * train_len)
             train = price[:n_train]
             test = price[n_train:]
-        
-            model = SARIMAX(train, order=params).fit(disp=False)
+
+            #speed things up if statement so dont have to go thorugh sarima bullshit
+            if seasonal_params == None:
+                model = SARIMAX(train, order = params).fit(disp=False)
+            else:
+                model = SARIMAX(train, order = params, seasonal_order = seasonal_params).fit(disp=False)
             print(f'''
             # Stock {self.loader.stocks[i]}  ####################
             {model.summary()}
             ''')
             pred = model.predict(start=n_train, end=self.loader.t, dynamic=False) # dynamic = false if we know past values
 
-    def backtestARIMA(self, params, train_len = 0.8, warning = False, save = True, ncols = 1, log = True):
+    def backtestARIMA(self, params, seasonal_params = [0, 0, 0, 1], train_len = 0.8, warning = False, save = True, ncols = 1, log = True):
         '''
         same settings as fitARIMA
         arima plotter
@@ -208,6 +212,7 @@ class EDA:
 
             preds = []
             errors = []
+            n_errors = []
             for t in range(n_train, self.loader.t):
                 y_train = price[:t]
 
@@ -217,27 +222,78 @@ class EDA:
                         warnings.simplefilter("ignore", category=ConvergenceWarning)
                         warnings.simplefilter("ignore", category=RuntimeWarning)
 
-                        model = SARIMAX(y_train, order=params).fit(disp=False)
+                        #speed things up if statement so dont have to go thorugh sarima bullshit
+                        if seasonal_params == None:
+                            model = SARIMAX(train, order = params).fit(disp=False)
+                        else:
+                            model = SARIMAX(train, order = params, seasonal_order = seasonal_params).fit(disp=False)
                 else:
-                    model = SARIMAX(y_train, order=params).fit(disp=False)
+                    #speed things up if statement so dont have to go thorugh sarima bullshit
+                    if seasonal_params == None:
+                        model = SARIMAX(train, order = params).fit(disp=False)
+                    else:
+                        model = SARIMAX(train, order = params, seasonal_order = seasonal_params).fit(disp=False)
                 pred = model.predict(start = len(y_train), end = len(y_train), dynamic = False) # dynamic = false if we know past values
                 preds.append(pred)
                 true_val = price[t]
                 errors.append(true_val - pred)
-            
+                n_errors.append(true_val - np.mean(y_train))
+
             ax.plot(price[:n_train + 1])
             ax.plot(range(n_train, self.loader.t), price[n_train:], color = 'silver')
             ax.plot(range(n_train, self.loader.t), preds, color = 'orange')
             ax.set_title(f'Stock {self.loader.stocks[i]}')
+            
+            # change error arrays to numpy so can do vector shi
             errors = np.array(errors)
-            mae = np.mean(np.abs(errors))
-            rmse = np.sqrt(np.mean(errors**2))
-            mrmse = rmse/np.std(price) # i dont rlly know the formula for this, keep gettign fucked values so imma not include
+            n_errors = np.array(n_errors)
+
+            # error metric calcs
+            mae = np.mean(np.abs(errors)) # mean absolute v error kinda useless but chatgpt said include it
+            rmse = np.sqrt(np.mean(errors**2)) # rmse NOT normalized
+            mrmse = rmse/np.std(price[n_train:]) # normalise on std of testing window
+            naive_rmse = 1 - rmse/np.sqrt(np.mean(n_errors ** 2)) # percentage improvement compared to just guessing mean
 
             print(f'# Stock {self.loader.stocks[i]} ####################')
             print(f"MAE:  {mae:.6f}")
             print(f"RMSE: {rmse:.6f}")
             print(f"norm. RMSE: {mrmse:.6f}")
+            print(f'vs. 0 baseline: {naive_rmse:.6f}')
 
         if save:
             fig.savefig('ARIMA_Backtests.png')
+
+    def topCorrelated(self, stocknum, dropFirst = False, log = True):
+        '''
+        returns top correlated stocks to stock i 
+        '''
+        # changing stocknum into an index that we can use
+        try:
+            i = self.loader.stocks.index(stocknum)
+        except:
+            raise ValueError('enter a stock thats IN the database')
+
+        returns = self.loader.returnsToNow(log).T # getting returns
+        corrArray = np.corrcoef(returns)[i] # getting correlation matrix for it
+        corrReturn = []
+        for n in range(len(corrArray)):
+            corrReturn.append([corrArray[n], self.loader.stocks[n]])
+
+        corrReturn.sort(key=lambda x: abs(x[0]), reverse = True) # Sorting by highest to lowest now
+        if dropFirst:
+            corrReturn = corrReturn[1:] # dropping first one (IF HIGHLY CORRELATED STOCK (1) THEN DONT TAKE THIS)
+        print(f'## Top Correlating Assets for Stock {stocknum} ####################')
+        for corr in corrReturn:
+            print(f'Stock {corr[1]}: {corr[0]}')
+        
+    def plotPrices(self):
+        '''
+        just plots the prices
+        '''
+        fig, ax = subplots(figsize = (8, 8))
+        for i in range(self.loader.nins):
+            ax.plot(self.loader.data.T[i], label = f'Stock {self.loader.stocks[i]}')
+        ax.legend()
+        ax.set_title('All Asset Prices')
+        ax.set_xlabel('Time')
+        ax.set_ylabel('Price')
